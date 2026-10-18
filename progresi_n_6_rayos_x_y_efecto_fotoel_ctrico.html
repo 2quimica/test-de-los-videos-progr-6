@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Progresión 6: Rayos X y Efecto Fotoeléctrico - Cuestionario Audiovisual</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: #151c2e;
+      --bg-card-hover: #1e2942;
+      --border-color: #2a3654;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-cyan: #06b6d4;
+      --accent-cyan-glow: rgba(6, 182, 212, 0.3);
+      --accent-purple: #8b5cf6;
+      --accent-purple-glow: rgba(139, 92, 246, 0.3);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.15);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px;
+      overflow-x: hidden;
+    }
+
+    #app-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+    }
+
+    .header-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background-color: #0d1322;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-control:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px var(--accent-cyan-glow);
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--accent-cyan-glow);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 8px;
+      z-index: 50;
+      background: rgba(21, 28, 46, 0.92);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .user-info-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .user-name-display {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+
+    .question-progress-text {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background-color: #0d1322;
+      border: 1.5px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      font-weight: 800;
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+      transition: all 0.3s ease;
+    }
+
+    .timer-warning {
+      border-color: var(--warning);
+      color: var(--warning);
+      background-color: var(--warning-bg);
+      animation: pulse 1.5s infinite;
+    }
+
+    .timer-critical {
+      border-color: var(--danger);
+      color: var(--danger);
+      background-color: var(--danger-bg);
+      animation: pulse 0.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .question-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .svg-diagram-container {
+      width: 100%;
+      background-color: #0a0e17;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .svg-diagram-container svg {
+      max-width: 100%;
+      height: auto;
+      max-height: 180px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background-color: #0d1322;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      line-height: 1.35;
+    }
+
+    .option-btn:hover:not(.btn-disabled) {
+      border-color: var(--accent-cyan);
+      background-color: var(--bg-card-hover);
+    }
+
+    .option-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background-color: var(--border-color);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feedback-box {
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .feedback-correct {
+      background-color: var(--success-bg);
+      border: 1.5px solid var(--success);
+    }
+
+    .feedback-incorrect {
+      background-color: var(--danger-bg);
+      border: 1.5px solid var(--danger);
+    }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .feedback-correct .feedback-header { color: var(--success); }
+    .feedback-incorrect .feedback-header { color: var(--danger); }
+
+    .feedback-correct-answer {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .feedback-explanation {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .evidence-card {
+      background: linear-gradient(180deg, #151c2e 0%, #0d1322 100%);
+      border: 2px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+    }
+
+    .score-big {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1;
+      margin: 12px 0 4px 0;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .performance-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .badge-excellent { background-color: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+    .badge-verygood { background-color: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+    .badge-good { background-color: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+    .badge-process { background-color: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
+    .badge-reinforce { background-color: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    .summary-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .summary-table td:nth-child(2) {
+      text-align: right;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .camera-notice-box {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+      border: 1.5px dashed var(--warning);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fef08a;
+      line-height: 1.35;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+    <main id="app-content"></main>
+  </div>
+
+  <script>
+    const QUESTIONS_BANK = [
+      // --- RAYOS X (15 PREGUNTAS) ---
+      {
+        id: 1,
+        topic: "rayos_x",
+        difficulty: "basico",
+        question: "¿En qué fecha y con qué experimento fortuito descubrió Wilhelm Conrad Röntgen los Rayos X?",
+        options: [
+          "El 8 de noviembre de 1895, al envolver un tubo de Crooks en cartón negro y observar el brillo de una pantalla lejana.",
+          "El 5 de enero de 1896, al exponer una placa fotográfica directamente a la luz solar.",
+          "El 22 de diciembre de 1895, al medir la corriente eléctrica dentro del tubo de Geissler.",
+          "En diciembre de 1900, al intentar resolver el problema del cuerpo negro."
+        ],
+        correct: 0,
+        explanation: "Röntgen descubrió los Rayos X la noche del 8 de noviembre de 1895. Al cubrir su tubo de Crooks con cartón negro a oscuras, notó que una pantalla de sal fluorescente situada a un metro comenzaba a brillar."
+      },
+      {
+        id: 2,
+        topic: "rayos_x",
+        difficulty: "basico",
+        question: "¿Qué tubo de cristal con vacío parcial e hilos de electrodos fue el antecedente directo con el que Röntgen trabajaba?",
+        options: [
+          "El tubo de fotoelectrodo espectral.",
+          "El tubo de Crooks (o de rayos catódicos).",
+          "La celda de silicio fotovoltaica.",
+          "El acelerador lineal colimador."
+        ],
+        correct: 1,
+        explanation: "Röntgen utilizaba el tubo de Crooks, desarrollado años antes por William Crooks reduciendo la presión interna de los tubos de Geissler para estudiar la descarga eléctrica en el vacío."
+      },
+      {
+        id: 3,
+        topic: "rayos_x",
+        difficulty: "basico",
+        question: "Completa la frase: La pantalla que brillaba sola en el laboratorio de Röntgen estaba recubierta con la sal fluorescente denominada __________.",
+        options: [
+          "Cloruro de sodio puro",
+          "Sulfato de calcio dihidratado",
+          "Platinocianuro de bario",
+          "Óxido de silicio con wolframio"
+        ],
+        correct: 2,
+        explanation: "La pantalla estaba recubierta de platinocianuro de bario, una sal que emitía fluorescencia cuando alcanzaba la radiación invisible proveniente del tubo envuelto."
+      },
+      {
+        id: 4,
+        topic: "rayos_x",
+        difficulty: "basico",
+        question: "¿Qué postura asumió Röntgen sobre la patente de su descubrimiento y qué premio histórico recibió por ello?",
+        options: [
+          "Patentó inmediatamente la máquina y donó sus ganancias al ejército alemán.",
+          "Vendió la exclusiva comercial a Thomas Edison y rechazó el Premio Nobel.",
+          "Patentó la radiografía en Viena para financiar su propio laboratorio privado.",
+          "Se negó a patentarlo para que perteneciera a toda la humanidad y ganó el primer Premio Nobel de Física en 1901."
+        ],
+        correct: 3,
+        explanation: "Röntgen jamás quiso patentar los Rayos X pues consideraba que los descubrimientos pertenecían a la humanidad. En 1901 fue galardonado con el primer Premio Nobel de Física de la historia."
+      },
+      {
+        id: 5,
+        topic: "rayos_x",
+        difficulty: "basico",
+        question: "¿Cuál fue la icónica primera radiografía tomada a un ser humano vivo el 22 de diciembre de 1895?",
+        options: [
+          "Su propio pie con una bala alojada tras un accidente militar.",
+          "La mano de su esposa Anna Bertha Ludwig, mostrando sus huesos y su anillo de compromiso.",
+          "El tórax y las costillas de su ayudante de laboratorio.",
+          "La mano de su colega Albert von Kölliker durante la conferencia de Würzburg."
+        ],
+        correct: 1,
+        explanation: "Röntgen expuso la mano de su esposa Anna Bertha durante 15 minutos frente a la placa fotográfica, revelando con claridad sus huesos y la sombra densa de su anillo."
+      },
+      {
+        id: 6,
+        topic: "rayos_x",
+        difficulty: "intermedio",
+        question: "¿Cómo se generan los Rayos X por 'radiación de frenado' (Bremsstrahlung) en un tubo médico moderno?",
+        svg: `<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" rx="8" fill="#0d1322"/><path d="M 30 60 L 120 60" stroke="#06b6d4" stroke-width="3" stroke-dasharray="4"/><polygon points="120,60 110,55 110,65" fill="#06b6d4"/><rect x="130" y="30" width="30" height="60" fill="#94a3b8" rx="4"/><path d="M 160 60 L 240 20" stroke="#ef4444" stroke-width="2.5"/><path d="M 160 60 L 240 100" stroke="#ef4444" stroke-width="2.5"/><text x="45" y="50" fill="#06b6d4" font-size="10" font-weight="bold">Electrones</text><text x="125" y="105" fill="#94a3b8" font-size="10" font-weight="bold">Blanco Metal</text><text x="210" y="50" fill="#ef4444" font-size="10" font-weight="bold">Rayos X</text></svg>`,
+        options: [
+          "Se calienta un filtro de luz roja hasta proyectar ondas electromagnéticas visibles.",
+          "La radiación ultravioleta del sol rebota sobre cristales de platinocianuro.",
+          "Electrones acelerados a gran velocidad chocan contra un blanco metálico pesado (wolframio) y se frenan bruscamente, emitiendo calor y Rayos X.",
+          "Se aplican campos magnéticos paralelos para expulsar fotones de baja frecuencia."
+        ],
+        correct: 2,
+        explanation: "Al frenarse abruptamente los electrones contra el blanco pesado de wolframio o cobre, la energía cinética del impacto se convierte en una gran cantidad de calor y fotones de alta energía (Rayos X)."
+      },
+      {
+        id: 7,
+        topic: "rayos_x",
+        difficulty: "intermedio",
+        question: "¿Por qué en una radiografía los huesos y objetos metálicos aparecen blancos mientras que la piel y músculos se ven oscuros?",
+        options: [
+          "Los huesos contienen calcio y átomos pesados densos que absorben la radiación, proyectando sombras nítidas.",
+          "La piel absorbe todos los Rayos X y los refleja de vuelta a la cámara.",
+          "Los metales emitían su propia luz blanca al contacto con el tubo de Crooks.",
+          "Los fotones devuelven energía térmica que destruye la emulsión en tejidos blandos."
+        ],
+        correct: 0,
+        explanation: "Los materiales formados por átomos pesados como el calcio de los huesos o el plomo absorben con facilidad los Rayos X y no los dejan pasar a la placa, dejando una sombra clara."
+      },
+      {
+        id: 8,
+        topic: "rayos_x",
+        difficulty: "intermedio",
+        question: "Ordena la secuencia correcta de los hallazgos iniciales de Röntgen la noche del descubrimiento:",
+        options: [
+          "1º Puso su mano -> 2º Vio brillar la pantalla -> 3º Envolvió el tubo -> 4º Encendió las luces del cuarto.",
+          "1º Envolvió el tubo en cartón negro -> 2º Encendió la corriente -> 3º Vio brillar la pantalla distante -> 4º Puso objetos y vio sus huesos.",
+          "1º Publicó en el periódico -> 2º Tomó la foto de su esposa -> 3º Encendió el tubo -> 4º Envolvió en cartón.",
+          "1º Ganó el Nobel -> 2º Envolvió el tubo -> 3º Hizo pruebas con plomo -> 4º Vio brillar la sal."
+        ],
+        correct: 1,
+        explanation: "Röntgen primero aisló la luz del tubo envolviéndolo en cartón negro. Al aplicar corriente notó el brillo inesperado de la pantalla fluorescente y procedió a interponer materiales (como plomo y su mano)."
+      },
+      {
+        id: 9,
+        topic: "rayos_x",
+        difficulty: "intermedio",
+        question: "¿Cuál es el metal extremadamente denso que sirvió como escudo de protección contra la radiación desde los primeros años?",
+        options: [
+          "Aluminio anodizado",
+          "Cobre refinado",
+          "Plomo",
+          "Hierro dulce"
+        ],
+        correct: 2,
+        explanation: "Debido a su elevadísima densidad y elevado número atómico, el plomo frena y absorbe eficientemente los Rayos X, utilizándose en chalecos, cristales plomados y muros blindados."
+      },
+      {
+        id: 10,
+        topic: "rayos_x",
+        difficulty: "intermedio",
+        question: "¿Cómo se difundió públicamente por primera vez la noticia del descubrimiento el 5 de enero de 1896?",
+        options: [
+          "Mediante una transmisión de radio realizada por Nicola Tesla desde Nueva York.",
+          "A través de una revista médica publicada exclusivamente por la Universidad de Würzburg.",
+          "En un anuncio televisivo presentado por Thomas Edison.",
+          "En el periódico austriaco 'Die Presse', tras recibir las imágenes el físico Franz Exner."
+        ],
+        correct: 3,
+        explanation: "Röntgen envió copias de su trabajo a científicos europeos, incluyendo a Franz Exner en Viena. El hijo del editor del periódico 'Die Presse' vio las fotos y su padre publicó el reportaje el 5 de enero de 1896."
+      },
+      {
+        id: 11,
+        topic: "rayos_x",
+        difficulty: "preuniversitario",
+        question: "En el espectro electromagnético (Progresión 6), ¿qué propiedades físicas caracterizan a los Rayos X?",
+        options: [
+          "Grandes longitudes de onda, baja frecuencia y nula capacidad de interacción.",
+          "Longitudes de onda extremadamente cortas (del tamaño de un átomo), muy alta frecuencia y alta energía.",
+          "Ondas mecánicas que requieren aire para propagarse a velocidad constante.",
+          "Fotones de menor energía que las ondas de radio y la luz infrarroja."
+        ],
+        correct: 1,
+        explanation: "Los Rayos X ocupan la región de alta frecuencia y baja longitud de onda del espectro electromagnético. Sus fotones poseen altísima energía individual."
+      },
+      {
+        id: 12,
+        topic: "rayos_x",
+        difficulty: "preuniversitario",
+        question: "¿Por qué los Rayos X se clasifican como 'radiación ionizante' y qué riesgo biológico implica su mal uso?",
+        options: [
+          "Calientan suavemente las moléculas de agua sin alterar los átomos.",
+          "Reflejan la luz visible destruyendo los glóbulos rojos por fricción.",
+          "Tienen energía suficiente para arrancar electrones de los átomos y romper enlaces químicos como el ADN celular.",
+          "Desvían las ondas de sonido hacia los tejidos epidérmicos."
+        ],
+        correct: 2,
+        explanation: "Al ser ionizantes, sus fotones pueden expulsar electrones de las moléculas celulares. Si se usan sin protección o en dosis excesivas, dañan la estructura genética (ADN) produciendo quemaduras o cáncer."
+      },
+      {
+        id: 13,
+        topic: "rayos_x",
+        difficulty: "preuniversitario",
+        question: "¿Qué técnica médica moderna combina múltiples proyecciones de Rayos X alrededor del cuerpo para obtener imágenes en 3D en 'rebanadas'?",
+        options: [
+          "Tomografía Computarizada (TC / CT Scan)",
+          "Resonancia magnética de infrarrojo",
+          "Ecografía por radiación fotoeléctrica",
+          "Espectrometría de centelleo alfa"
+        ],
+        correct: 0,
+        explanation: "La Tomografía Computarizada hace girar el tubo de Rayos X alrededor del paciente y mediante algoritmos reconstruye cortes transversales tridimensionales detallados."
+      },
+      {
+        id: 14,
+        topic: "rayos_x",
+        difficulty: "preuniversitario",
+        question: "En los equipos digitales hospitalarios modernos vistos en el video, ¿qué función cumplen los 'centelladores'?",
+        options: [
+          "Aumentar la potencia del chorro de electrones antes del frenado.",
+          "Convertir los Rayos X invisibles que atraviesan el cuerpo en destellos de luz visible captados por sensores digitales.",
+          "Filtrar el plomo para evitar daños en la cámara fotográfica.",
+          "Absorber el calor excedente del tubo sin generar imágenes."
+        ],
+        correct: 1,
+        explanation: "Los centelladores contienen cristales especiales de tierras raras (como itrio o gadolini) que emiten destellos de luz visible al ser golpeados por los Rayos X, permitiendo capturas digitales instantáneas."
+      },
+      {
+        id: 15,
+        topic: "rayos_x",
+        difficulty: "preuniversitario",
+        question: "¿Qué demostró el comportamiento de los rayos catódicos dentro del tubo de Crooks al ser desviados por un imán?",
+        options: [
+          "Que la luz visible siempre es atraída por el polo norte de cualquier imán.",
+          "Que los Rayos X no pueden viajar en el vacío sin aire residual.",
+          "Que consistían en un flujo de partículas con carga negativa y masa (electrones) impulsadas por energía eléctrica.",
+          "Que los fotones no interactúan con los campos electromagnéticos."
+        ],
+        correct: 2,
+        explanation: "El experimento del tubo de Crooks con la cruz de Malta y el imán demostró que los rayos catódicos tenían masa (hacían girar aspas) y carga eléctrica negativa (se desviaban con imanes), descubriendo al electrón."
+      },
+
+      // --- EFECTO FOTOELÉCTRICO Y PROGRESIÓN 6 (15 PREGUNTAS) ---
+      {
+        id: 16,
+        topic: "fotoelectrico",
+        difficulty: "basico",
+        question: "¿En qué consiste esencialmente el Efecto Fotoeléctrico?",
+        options: [
+          "Es la refracción de los colores de la luz al atravesar un vaso con agua.",
+          "Es el calentamiento térmico de un cable cuando pasa corriente eléctrica.",
+          "Es el rebote de ondas de radio contra las capas altas de la atmósfera.",
+          "Es la expulsión de electrones de una superficie metálica cuando esta es iluminada con luz adecuada."
+        ],
+        correct: 3,
+        explanation: "El efecto fotoeléctrico es el fenómeno mediante el cual la luz (radiación electromagnética) incide sobre un metal y le transfiere energía a sus electrones, provocando que salgan expulsados."
+      },
+      {
+        id: 17,
+        topic: "fotoelectrico",
+        difficulty: "basico",
+        question: "En la demostración experimental mostrada en el video, ¿para qué se colocaban filtros frente a la lámpara que iluminaba el tubo?",
+        options: [
+          "Para impedir que la luz tocara la superficie metálica.",
+          "Para dejar pasar luz de un solo color (frecuencia específica) como rojo o violeta.",
+          "Para aumentar la temperatura del tubo de vacío.",
+          "Para convertir los electrones en fotones de alta frecuencia."
+        ],
+        correct: 1,
+        explanation: "Se utilizaban filtros de colores para seleccionar frecuencias de luz específicas y comprobar qué color lograba arrancar electrones del semicilindro metálico."
+      },
+      {
+        id: 18,
+        topic: "fotoelectrico",
+        difficulty: "basico",
+        question: "Completa la frase: En el modelo corpuscular de la radiación, las partículas o 'paquetes discretos' de energía luminosa se denominan __________.",
+        options: [
+          "Protones",
+          "Neutrones libres",
+          "Fotones",
+          "Cuantos de masa"
+        ],
+        correct: 2,
+        explanation: "Según la física moderna y la Progresión 6, la luz está compuesta por fotones, que son paquetes o cuantos indivisibles de energía electromagnética."
+      },
+      {
+        id: 19,
+        topic: "fotoelectrico",
+        difficulty: "basico",
+        question: "¿Qué científico alemán propuso en diciembre de 1900 que la energía de los sistemas estaba cuantizada en paquetes discretos?",
+        options: [
+          "Max Planck",
+          "Heinrich Geissler",
+          "William Crooks",
+          "Wilhelm Röntgen"
+        ],
+        correct: 0,
+        explanation: "Max Planck introdujo la hipótesis cuántica en diciembre de 1900 para explicar la radiación del cuerpo negro, marcando el nacimiento formal de la mecánica cuántica."
+      },
+      {
+        id: 20,
+        topic: "fotoelectrico",
+        difficulty: "basico",
+        question: "¿Qué dispositivo de las cámaras fotográficas mencionado en el video funciona directamente basado en el efecto fotoeléctrico?",
+        options: [
+          "El prisma dispersor de arcoíris.",
+          "El exposímetro o fotómetro (mide la intensidad de luz midiendo la corriente producida).",
+          "El tubo de frenado Bremsstrahlung.",
+          "El espejo reflector de plomo."
+        ],
+        correct: 1,
+        explanation: "Los exposímetros o fotómetros miden la corriente eléctrica generada por la luz que golpea un sensor (efecto fotoeléctrico) para calcular la iluminación precisa al tomar una foto."
+      },
+      {
+        id: 21,
+        topic: "fotoelectrico",
+        difficulty: "intermedio",
+        question: "¿En qué componente interno del tubo de efecto fotoeléctrico visto en el video se acumulaban los electrones expulsados para generar la corriente?",
+        svg: `<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="120" rx="8" fill="#0d1322"/><path d="M 40 20 A 40 40 0 0 0 40 100" fill="none" stroke="#8b5cf6" stroke-width="4"/><circle cx="120" cy="60" r="5" fill="#06b6d4"/><path d="M 120 60 L 260 60" stroke="#06b6d4" stroke-width="2"/><path d="M 15 60 L 35 60" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3"/><text x="10" y="112" fill="#8b5cf6" font-size="10" font-weight="bold">Semicilindro Metal</text><text x="120" y="30" fill="#06b6d4" font-size="10" font-weight="bold">Alambre Coaxial Centro</text></svg>`,
+        options: [
+          "En la pantalla exterior de platinocianuro de bario.",
+          "En el filtro de color rojo montado en la lámpara.",
+          "En el alambre coaxial ubicado en el centro del tubo de cristal.",
+          "En las paredes de vidrio envueltas con plástico."
+        ],
+        correct: 2,
+        explanation: "Los electrones arrancados del semicilindro metálico viajaban por el vacío y eran colectados en el alambre coaxial del centro, generando una señal de corriente leída por el microamperímetro."
+      },
+      {
+        id: 22,
+        topic: "fotoelectrico",
+        difficulty: "intermedio",
+        question: "En el experimento del video, ¿qué diferencia clave se observó al usar el filtro de luz violeta en comparación con el filtro de luz roja?",
+        options: [
+          "La luz roja produjo mucha más corriente que la violeta sin importar el voltaje.",
+          "La luz violeta destruyó el semicilindro de metal por sobrecalentamiento.",
+          "Ambos colores se comportaron de manera exactamente idéntica.",
+          "La luz violeta generó corriente eléctrica más fácilmente y requirió menor voltaje/intensidad porque sus fotones tienen mayor frecuencia."
+        ],
+        correct: 3,
+        explanation: "La luz violeta, al tener mayor frecuencia, posee fotones con energía cuántica individual más alta, generando corriente fotoeléctrica con menor intensidad requerida que la luz roja."
+      },
+      {
+        id: 23,
+        topic: "fotoelectrico",
+        difficulty: "intermedio",
+        question: "¿Qué afirmación contradijo la teoría clásica ondulatoria durante los experimentos del efecto fotoeléctrico?",
+        options: [
+          "Que la luz no podía propagarse en presencia de un campo magnético.",
+          "Que aumentar el brillo de una luz roja intensa NO arrancaba electrones si su frecuencia era inferior al umbral del metal.",
+          "Que los electrones no tienen carga eléctrica negativa.",
+          "Que la luz visible siempre viaja más lento que las ondas de radio."
+        ],
+        correct: 1,
+        explanation: "La física clásica suponía que una onda roja muy brillante (mucha intensidad) acumulaba energía hasta arrancar electrones. El experimento demostró que si la frecuencia del fotón no alcanza el mínimo, no se emite ningún electrón."
+      },
+      {
+        id: 24,
+        topic: "fotoelectrico",
+        difficulty: "intermedio",
+        question: "Según la Progresión 6, la radiación electromagnética presenta una 'dualidad' porque:",
+        options: [
+          "Es mitad calor y mitad electricidad estática.",
+          "Solo existe cuando el ojo humano la está observando directamente.",
+          "Puede modelarse como onda de campos oscilantes o como paquetes de partículas (fotones) según la interacción.",
+          "Viaja como sonido en el agua y como luz en el espacio."
+        ],
+        correct: 2,
+        explanation: "La Progresión 6 indica que la radiación electromagnética exhibe dualidad: para explicar reflexión o interferencia se usa el modelo ondulatorio; para explicar la absorción y el efecto fotoeléctrico se usa el modelo de fotones."
+      },
+      {
+        id: 25,
+        topic: "fotoelectrico",
+        difficulty: "intermedio",
+        question: "¿Por qué la luz de una lámpara común en la oficina no produce quemaduras tras 10 horas, pero 30 minutos de sol sin bloqueador sí dañan la piel?",
+        options: [
+          "Los fotones visibles de la lámpara tienen baja frecuencia (pelotas de ping-pong), mientras que los fotones UV del sol son muy energéticos (bolas de boliche) y alteran moléculas.",
+          "La lámpara no emite fotones ni energía electromagnética.",
+          "El sol emite ondas mecánicas que golpean físicamente la piel.",
+          "La lámpara funciona únicamente con corriente continua no cuántica."
+        ],
+        correct: 0,
+        explanation: "Como explica la analogía de las bolas de boliche, los fotones de luz visible no tienen la energía cuántica individual para romper enlaces biológicos, mientras que los fotones UV sí ionizan y dañan las células."
+      },
+      {
+        id: 26,
+        topic: "fotoelectrico",
+        difficulty: "preuniversitario",
+        question: "En la explicación cuántica de Albert Einstein para el efecto fotoeléctrico, la energía (E) de cada fotón depende directamente de:",
+        options: [
+          "La velocidad del metal iluminado en metros por segundo.",
+          "La frecuencia de la radiación (E = h · f).",
+          "El grosor del cristal plomado del tubo.",
+          "La cantidad total de electrones libres en el ambiente."
+        ],
+        correct: 1,
+        explanation: "Einstein postuló que la energía de cada proyectil de luz (fotón) es directamente proporcional a su frecuencia ($E = h \cdot f$), donde $h$ es la constante de Planck."
+      },
+      {
+        id: 27,
+        topic: "fotoelectrico",
+        difficulty: "preuniversitario",
+        question: "Relaciona correctamente la región del espectro visible con la energía de sus fotones según la Progresión 6:",
+        options: [
+          "Luz Roja -> Fotones de alta energía ionizante / Luz Violeta -> Fotones de energía cero",
+          "Luz Roja -> Radiación gamma peligrosa / Luz Violeta -> Onda de radio de baja frecuencia",
+          "Luz Roja -> Fotones de menor frecuencia y menor energía / Luz Violeta -> Fotones de mayor frecuencia y mayor energía",
+          "Ambos colores poseen exactamente la misma frecuencia cuántica"
+        ],
+        correct: 2,
+        explanation: "Dentro del espectro visible, la luz roja corresponde a mayor longitud de onda y menor frecuencia (menor energía por fotón), mientras que la luz violeta corresponde a menor longitud de onda y mayor frecuencia (mayor energía)."
+      },
+      {
+        id: 28,
+        topic: "fotoelectrico",
+        difficulty: "preuniversitario",
+        question: "¿De qué manera los paneles solares fotovoltaicos aprovechan el efecto fotoeléctrico en la vida cotidiana?",
+        options: [
+          "Los paneles almacenan las ondas de sonido del sol para mover turbinas mecánicas.",
+          "Reflejan los Rayos X hacia la atmósfera para calentar agua.",
+          "Absorben calor por refracción directa cambiando el color del panel.",
+          "Los fotones de la luz solar impactan contra los electrones del silicio y les dan la energía para liberarse y fluir como corriente eléctrica."
+        ],
+        correct: 3,
+        explanation: "Los paneles solares están hechos de semiconductores (silicio). Cuando los fotones solares chocan con los electrones del material, transfieren su energía y generan un flujo continuo de electrones (electricidad)."
+      },
+      {
+        id: 29,
+        topic: "fotoelectrico",
+        difficulty: "preuniversitario",
+        question: "¿Por qué señales como Wi-Fi, radio y microondas se consideran 'radiación no ionizante'?",
+        options: [
+          "Sus fotones tienen tan baja frecuencia que carecen de la energía necesaria para arrancar electrones o romper enlaces en los átomos.",
+          "Porque no son ondas electromagnéticas sino fluidos gaseosos.",
+          "Porque viajan a menor velocidad que la luz en el vacío.",
+          "Porque rebotan en el plomo sin transferir ninguna información."
+        ],
+        correct: 0,
+        explanation: "Las ondas de radio, microondas e infrarrojo poseen frecuencias muy bajas. Sus fotones individuales no tienen la energía suficiente para ionizar átomos ni romper enlaces químicos biológicos."
+      },
+      {
+        id: 30,
+        topic: "fotoelectrico",
+        difficulty: "preuniversitario",
+        question: "¿Qué principio fundamental sobre la interacción radiación-materia demostró el efecto fotoeléctrico?",
+        options: [
+          "Que la luz es una masa continua e indivisible que no posee energía.",
+          "Que la velocidad de los electrones depende exclusivamente de la cantidad de plomo presente.",
+          "Que la energía electromagnética solo se propaga cuando existe aire en el espacio.",
+          "Que la transferencia de energía ocurre en paquetes individuales donde UN fotón interactúa directamente con UN solo electrón."
+        ],
+        correct: 3,
+        explanation: "El efecto fotoeléctrico confirmó la naturaleza corpuscular cuantizada: la colisión es uno a uno (un fotón cede toda su energía a un electrón). Si el fotón individual no tiene suficiente energía, no hay emisión."
+      }
+    ];
+
+    const STORAGE_KEY = 'PROG6_QUIZ_RAYOSX_EFECTO_STATE_V3';
+
+    let state = {
+      user: { name: '', group: '' },
+      startedAt: null,
+      currentQuestion: 0,
+      answers: new Array(30).fill(null),
+      graded: new Array(30).fill(null),
+      finished: false,
+      finishReason: ''
+    };
+
+    let timerInterval = null;
+
+    // Guardar en localStorage protegido
+    function saveToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn("No se pudo guardar en localStorage", e);
+      }
+    }
+
+    // Cargar de localStorage protegido
+    function loadFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.startedAt) {
+            state = parsed;
+            // Verificar si el tiempo de 15 min (900 seg) ya venció
+            const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+            if (elapsed >= 900 && !state.finished) {
+              finishQuiz('time_out');
+            }
+            return true;
+          }
+        }
+      } catch (e) {
+        console.warn("Error leyendo localStorage", e);
+      }
+      return false;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        if (!state.startedAt || state.finished) {
+          clearInterval(timerInterval);
+          return;
+        }
+
+        const elapsedSeconds = Math.floor((Date.now() - state.startedAt) / 1000);
+        const remainingSeconds = Math.max(0, 900 - elapsedSeconds);
+
+        updateTimerUI(remainingSeconds);
+
+        if (remainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          finishQuiz('time_out');
+        }
+      }, 250);
+    }
+
+    function updateTimerUI(seconds) {
+      const timerElement = document.getElementById('timer-display');
+      if (!timerElement) return;
+
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      const formatted = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      
+      timerElement.textContent = formatted;
+
+      // Cambios visuales por tiempo
+      timerElement.className = 'timer-badge';
+      if (seconds <= 30) {
+        timerElement.classList.add('timer-critical');
+      } else if (seconds <= 120) {
+        timerElement.classList.add('timer-warning');
+      }
+    }
+
+    function finishQuiz(reason) {
+      if (state.finished) return;
+
+      state.finished = true;
+      state.finishReason = reason;
+
+      if (timerInterval) clearInterval(timerInterval);
+
+      // Evaluar preguntas no respondidas como incorrectas
+      for (let i = 0; i < 30; i++) {
+        if (state.answers[i] === null) {
+          state.answers[i] = -1; // No contestada
+          state.graded[i] = false;
+        }
+      }
+
+      saveToStorage();
+      renderApp();
+    }
+
+    function renderApp() {
+      const container = document.getElementById('app-content');
+      if (!container) return;
+
+      if (state.finished) {
+        renderEvidenceScreen(container);
+      } else if (state.startedAt !== null) {
+        renderQuizScreen(container);
+        startTimer();
+      } else {
+        renderStartScreen(container);
+      }
+    }
+
+    // 1. Pantalla Inicial
+    function renderStartScreen(container) {
+      container.innerHTML = `
+        <div class="card" style="text-align: center;">
+          <span class="header-badge">La energía en los procesos de la vida diaria</span>
+          <h1>PROGRESIÓN 6</h1>
+          <h2>RAYOS X Y EFECTO FOTOELÉCTRICO</h2>
+          <p style="font-weight: 700; color: var(--text-main); margin-bottom: 16px;">CUESTIONARIO AUDIOVISUAL INTERACTIVO</p>
+
+          <form id="start-form" onsubmit="handleStartQuiz(event)" style="margin-top: 16px;">
+            <div class="input-group">
+              <label for="input-name">Nombre Completo *</label>
+              <input type="text" id="input-name" class="input-control" placeholder="Ej. Ana María Gómez Pérez" required value="${state.user.name}">
+            </div>
+
+            <div class="input-group">
+              <label for="input-group">Grupo *</label>
+              <input type="text" id="input-group" class="input-control" placeholder="Ej. 402-A" required value="${state.user.group}">
+            </div>
+
+            <div style="background-color: #0d1322; border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: left; margin-bottom: 20px; font-size: 0.88rem; line-height: 1.45; color: var(--text-muted);">
+              <p style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 6px;">📌 Instrucciones de la evaluación:</p>
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li><strong>30 preguntas</strong> conceptuales de los videos trabajados.</li>
+                <li><strong>Tiempo máximo: 15 minutos.</strong></li>
+                <li>El reloj comenzará exactamente cuando abraces la primera pregunta.</li>
+                <li>Cada pregunta se califica con tu <strong>primera respuesta</strong>.</li>
+                <li>Conocerás de inmediato la respuesta correcta y una explicación breve.</li>
+                <li>Al llegar a 00:00, el cuestionario se entregará automáticamente.</li>
+              </ul>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              🚀 INICIAR CUESTIONARIO
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    function handleStartQuiz(event) {
+      event.preventDefault();
+      const nameInput = document.getElementById('input-name').value.trim();
+      const groupInput = document.getElementById('input-group').value.trim();
+
+      if (!nameInput || !groupInput) {
+        alert("Por favor, completa tu Nombre y Grupo para comenzar.");
+        return;
+      }
+
+      state.user.name = nameInput;
+      state.user.group = groupInput;
+      state.startedAt = Date.now();
+      state.currentQuestion = 0;
+
+      saveToStorage();
+      renderApp();
+    }
+
+    // 2. Pantalla de Cuestionario Activo
+    function renderQuizScreen(container) {
+      const qIndex = state.currentQuestion;
+      const q = QUESTIONS_BANK[qIndex];
+      const hasAnswered = state.answers[qIndex] !== null;
+      const selectedOption = state.answers[qIndex];
+
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const remaining = Math.max(0, 900 - elapsed);
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      const timeStr = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      container.innerHTML = `
+        <!-- Sticky Header con temporizador permanente -->
+        <div class="sticky-header">
+          <div class="user-info-summary">
+            <span class="user-name-display" title="${state.user.name}">${state.user.name} (${state.user.group})</span>
+            <span class="question-progress-text">Pregunta ${qIndex + 1} de 30</span>
+          </div>
+          <div id="timer-display" class="timer-badge">${timeStr}</div>
+        </div>
+
+        <!-- Tarjeta de Pregunta -->
+        <div class="card question-card">
+          ${q.svg ? `<div class="svg-diagram-container">${q.svg}</div>` : ''}
+          
+          <div class="question-text">
+            <strong>${qIndex + 1}.</strong> ${q.question}
+          </div>
+
+          <div class="options-grid">
+            ${q.options.map((opt, i) => {
+              let btnClass = "option-btn";
+              if (hasAnswered) {
+                btnClass += " btn-disabled";
+                if (i === q.correct) {
+                  btnClass += " feedback-correct";
+                } else if (i === selectedOption) {
+                  btnClass += " feedback-incorrect";
+                }
+              }
+              const letters = ["A", "B", "C", "D"];
+              return `
+                <button class="${btnClass}" onclick="handleSelectOption(${i})" ${hasAnswered ? 'disabled' : ''}>
+                  <span class="option-letter">${letters[i]}</span>
+                  <span>${opt}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Retroalimentación inmediata tras responder -->
+          ${hasAnswered ? `
+            <div class="feedback-box ${state.graded[qIndex] ? 'feedback-correct' : 'feedback-incorrect'}">
+              <div class="feedback-header">
+                ${state.graded[qIndex] ? '✅ ¡RESPUESTA CORRECTA!' : '❌ RESPUESTA INCORRECTA'}
+              </div>
+              <div class="feedback-correct-answer">
+                Respuesta correcta: ${q.options[q.correct]}
+              </div>
+              <div class="feedback-explanation">
+                <strong>¿Por qué?</strong> ${q.explanation}
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top: 12px;" onclick="handleNextQuestion()">
+              ${qIndex < 29 ? 'SIGUIENTE PREGUNTA ➡️' : '🏁 FINALIZAR Y VER EVIDENCIA'}
+            </button>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function handleSelectOption(optionIndex) {
+      const qIndex = state.currentQuestion;
+      if (state.answers[qIndex] !== null) return; // Protección contra doble respuesta
+
+      const q = QUESTIONS_BANK[qIndex];
+      const isCorrect = optionIndex === q.correct;
+
+      state.answers[qIndex] = optionIndex;
+      state.graded[qIndex] = isCorrect;
+
+      saveToStorage();
+      renderApp();
+    }
+
+    function handleNextQuestion() {
+      if (state.currentQuestion < 29) {
+        state.currentQuestion++;
+        saveToStorage();
+        renderApp();
+      } else {
+        finishQuiz('completed');
+      }
+    }
+
+    // 3. Pantalla de Evidencia Final (Diseñada para captura de pantalla)
+    function renderEvidenceScreen(container) {
+      const correctCount = state.graded.filter(g => g === true).length;
+      const incorrectCount = state.graded.filter(g => g === false && state.answers[QUESTIONS_BANK.indexOf(g)] !== -1).length;
+      const unansweredCount = state.answers.filter(a => a === -1 || a === null).length;
+      const percentage = Math.round((correctCount / 30) * 100);
+
+      // Criterios de Desempeño
+      let performanceText = "";
+      let performanceClass = "";
+      if (percentage >= 90) {
+        performanceText = "EXCELENTE";
+        performanceClass = "badge-excellent";
+      } else if (percentage >= 80) {
+        performanceText = "MUY BUEN DESEMPEÑO";
+        performanceClass = "badge-verygood";
+      } else if (percentage >= 70) {
+        performanceText = "BUEN DESEMPEÑO";
+        performanceClass = "badge-good";
+      } else if (percentage >= 60) {
+        performanceText = "EN PROCESO";
+        performanceClass = "badge-process";
+      } else {
+        performanceText = "REQUIERE REFORZAMIENTO";
+        performanceClass = "badge-reinforce";
+      }
+
+      // Tiempo utilizado (máximo 15 minutos / 900 seg)
+      const elapsedSeconds = Math.min(900, Math.floor(((state.finishedAt || Date.now()) - state.startedAt) / 1000));
+      const usedMins = Math.floor(elapsedSeconds / 60);
+      const usedSecs = elapsedSeconds % 60;
+      const timeUsedStr = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const timeStr = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      container.innerHTML = `
+        <div class="evidence-card">
+          <span class="header-badge">EVIDENCIA DE EVALUACIÓN</span>
+          <h2 style="color: #ffffff; font-size: 1.2rem; margin-bottom: 2px;">LA ENERGÍA EN LOS PROCESOS DE LA VIDA DIARIA</h2>
+          <p style="color: var(--accent-cyan); font-weight: 700; font-size: 0.85rem; margin-bottom: 12px;">PROGRESIÓN 6: RAYOS X Y EFECTO FOTOELÉCTRICO</p>
+
+          <div style="background-color: #0d1322; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">${state.user.name}</div>
+            <div style="font-size: 0.9rem; font-weight: 700; color: var(--accent-cyan);">GRUPO: ${state.user.group}</div>
+          </div>
+
+          <div class="score-big">${percentage}%</div>
+          <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-bottom: 6px;">
+            ${correctCount} / 30 ACIERTOS
+          </div>
+
+          <div class="performance-badge ${performanceClass}">
+            ${performanceText}
+          </div>
+
+          <table class="summary-table">
+            <tr>
+              <td>Preguntas Totales:</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>Aciertos Correctos:</td>
+              <td>${correctCount}</td>
+            </tr>
+            <tr>
+              <td>Respuestas Incorrectas:</td>
+              <td>${30 - correctCount - unansweredCount}</td>
+            </tr>
+            <tr>
+              <td>Sin Contestar:</td>
+              <td>${unansweredCount}</td>
+            </tr>
+            <tr>
+              <td>Tiempo Utilizado:</td>
+              <td>${timeUsedStr} / 15:00 min</td>
+            </tr>
+            <tr>
+              <td>Estado de Entrega:</td>
+              <td>${state.finishReason === 'time_out' ? '⏱ TIEMPO FINALIZADO' : '✅ COMPLETADO A TIEMPO'}</td>
+            </tr>
+            <tr>
+              <td>Fecha y Hora Local:</td>
+              <td>${dateStr} - ${timeStr}</td>
+            </tr>
+          </table>
+
+          <div class="camera-notice-box">
+            📸 TOMA UNA CAPTURA DE ESTA PANTALLA Y ENVÍALA A TU PROFESOR COMO EVIDENCIA.
+          </div>
+
+          <button class="btn btn-primary" style="margin-top: 20px; background: var(--bg-card); border: 1px solid var(--border-color);" onclick="handleResetQuiz()">
+            🔄 Reiniciar para otro estudiante
+          </button>
+        </div>
+      `;
+    }
+
+    function handleResetQuiz() {
+      if (confirm("¿Deseas borrar esta evidencia para iniciar una nueva evaluación?")) {
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch(e) {}
+        state = {
+          user: { name: '', group: '' },
+          startedAt: null,
+          currentQuestion: 0,
+          answers: new Array(30).fill(null),
+          graded: new Array(30).fill(null),
+          finished: false,
+          finishReason: ''
+        };
+        renderApp();
+      }
+    }
+
+    window.onload = function() {
+      loadFromStorage();
+      renderApp();
+    };
+  </script>
+</body>
+</html>
